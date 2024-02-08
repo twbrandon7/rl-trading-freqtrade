@@ -1,0 +1,63 @@
+{
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-toolsai.jupyter-keymap",
+                "njpwerner.autodocstring",
+                "streetsidesoftware.code-spell-checker",
+                "eamodio.gitlens",
+                "ms-python.isort",
+                "ms-toolsai.jupyter",
+                "ms-toolsai.vscode-jupyter-cell-tags",
+                "ms-toolsai.jupyter-renderers",
+                "ms-toolsai.vscode-jupyter-slideshow",
+                "ms-python.vscode-pylance",
+                "ms-python.python",
+                "ms-python.black-formatter",
+                "ms-python.flake8",
+                "GitHub.copilot",
+                "ms-azuretools.vscode-docker"
+            ],
+            "settings": {
+                "terminal.integrated.defaultProfile.linux": "fish",
+                "terminal.integrated.profiles.linux": {
+                    "fish": {
+                        "path": "/usr/bin/fish"
+                    }
+                },
+                "flake8.args": [
+                    "--config=.flake8"
+                ],
+                "editor.formatOnSave": true,
+                "editor.codeActionsOnSave": {
+                    "source.organizeImports": true
+                },
+                "editor.rulers": [
+                    88
+                ],
+                "python.testing.unittestArgs": [
+                    "-v",
+                    "-s",
+                    "./tests",
+                    "-p",
+                    "test_*.py"
+                ],
+                "python.testing.pytestEnabled": false,
+                "python.testing.unittestEnabled": true,
+                "isort.args": [
+                    "--settings-path=${workspaceFolder}/.isort.cfg"
+                ],
+                "autoDocstring.docstringFormat": "google",
+                "jupyter.notebookFileRoot": "${workspaceFolder}"
+            }
+        }
+    },
+    "runArgs": [
+        "--gpus",
+        "all",
+        "--ipc=host"
+    ]
+}

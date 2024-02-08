@@ -1,0 +1,8 @@
+[flake8]
+max-line-length = 88
+extend-ignore = E203
+optional-ascii-coding = True
+exclude =
+    ./.git,
+    ./venv,
+    *.pyi
