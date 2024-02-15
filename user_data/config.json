@@ -1,9 +1,10 @@
 {
   "trading_mode": "futures",
   "margin_mode": "isolated",
-  "max_open_trades": 3,
+  "max_open_trades": 1,
+  "stake_amount": 0.001,
+  "dry_run_wallet": 1000,
   "stake_currency": "USDT",
-  "stake_amount": 0.05,
   "tradable_balance_ratio": 0.99,
   "fiat_display_currency": "USD",
   "timeframe": "5m",
@@ -94,7 +95,7 @@
     },
     "rl_config": {
       "train_cycles": 25,
-      "add_state_info": true,
+      "add_state_info": false,
       "max_trade_duration_candles": 300,
       "max_training_drawdown_pct": 0.02,
       "cpu_count": 8,
