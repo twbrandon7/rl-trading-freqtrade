@@ -11,3 +11,5 @@ data/
 *.sqlite
 *.sqlite-shm
 *.sqlite-wal
+
+user_data/backtest_results/
