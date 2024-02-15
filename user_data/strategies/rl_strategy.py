@@ -1,20 +1,19 @@
+from functools import reduce
+from typing import Optional, Union
+
+import freqtrade.vendor.qtpylib.indicators as qtpylib
 import numpy as np  # noqa
 import pandas as pd  # noqa
-from pandas import DataFrame
-from typing import Optional, Union
-from functools import reduce
-
+import talib.abstract as ta
 from freqtrade.freqai.RL.Base3ActionRLEnv import Actions
 from freqtrade.strategy import (
     BooleanParameter,
     CategoricalParameter,
     DecimalParameter,
-    IStrategy,
     IntParameter,
+    IStrategy,
 )
-
-import talib.abstract as ta
-import freqtrade.vendor.qtpylib.indicators as qtpylib
+from pandas import DataFrame
 
 
 class MyRLStrategy(IStrategy):
@@ -93,20 +92,26 @@ class MyRLStrategy(IStrategy):
     def populate_entry_trend(self, df: DataFrame, metadata: dict) -> DataFrame:
         enter_long_conditions = [
             df["do_predict"] == 1,
-            df["&-action"] == Actions.Buy.value and df['enter_tag'] != "long" and df['enter_tag'] != "short",
+            df["&-action"] == Actions.Buy.value,
+            df["enter_tag"] != "long",
+            df["enter_tag"] != "short",
         ]
         if enter_long_conditions:
             df.loc[
-                reduce(lambda x, y: x & y, enter_long_conditions), ["enter_long", "enter_tag"]
+                reduce(lambda x, y: x & y, enter_long_conditions),
+                ["enter_long", "enter_tag"],
             ] = (1, "long")
 
         enter_short_conditions = [
             df["do_predict"] == 1,
-            df["&-action"] == Actions.Sell.value and df['enter_tag'] != "long" and df['enter_tag'] != "short",
+            df["&-action"] == Actions.Sell.value,
+            df["enter_tag"] != "long",
+            df["enter_tag"] != "short",
         ]
         if enter_short_conditions:
             df.loc[
-                reduce(lambda x, y: x & y, enter_short_conditions), ["enter_short", "enter_tag"]
+                reduce(lambda x, y: x & y, enter_short_conditions),
+                ["enter_short", "enter_tag"],
             ] = (1, "short")
 
         return df
@@ -114,13 +119,16 @@ class MyRLStrategy(IStrategy):
     def populate_exit_trend(self, df: DataFrame, metadata: dict) -> DataFrame:
         exit_long_conditions = [
             df["do_predict"] == 1,
-            df["&-action"] == Actions.Sell.value and df['enter_tag'] == "long",
+            df["&-action"] == Actions.Sell.value,
+            df["enter_tag"] == "long",
         ]
         if exit_long_conditions:
             df.loc[reduce(lambda x, y: x & y, exit_long_conditions), "exit_long"] = 1
 
         exit_short_conditions = [
-            df["do_predict"] == 1, df["&-action"] == Actions.Buy.value and df['enter_tag'] == "short"
+            df["do_predict"] == 1,
+            df["&-action"] == Actions.Buy.value,
+            df["enter_tag"] == "short",
         ]
         if exit_short_conditions:
             df.loc[reduce(lambda x, y: x & y, exit_short_conditions), "exit_short"] = 1

@@ -10,10 +10,6 @@ class Agent:
         self._model_path = None
         self.model = None
 
-    def __setstate__(self, d):
-        self.__dict__ = d
-        self.model = torch.load(self._model_path)
-
     def save(self, path: str):
         # save pytorch model
         model_path = f"{path}.model.pt"
@@ -22,10 +18,17 @@ class Agent:
         # save agent
         torch.save(
             {
-                "pytrainer": self,
+                "pytrainer": self.__class__,
+                "agent": self,
             },
             path,
         )
+
+    @staticmethod
+    def load_from_checkpoint(pickle_dict: dict):
+        agent: "Agent" = pickle_dict["agent"]
+        agent.model = torch.load(agent._model_path)
+        return agent
 
     def predict(
         self, observations: pd.DataFrame, deterministic=True
