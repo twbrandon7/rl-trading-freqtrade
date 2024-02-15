@@ -7,3 +7,7 @@ models/time-series-transformer/
 models/time-series-transformer-traffic/
 models/time-series-transformer-btc*
 data/
+
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
