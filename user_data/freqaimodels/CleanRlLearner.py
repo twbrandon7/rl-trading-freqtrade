@@ -1,4 +1,4 @@
-from typing import Any, Dict, Optional, Union
+from typing import Any, Dict, Optional, Tuple, Union
 
 import gymnasium as gym
 import numpy as np
@@ -16,6 +16,8 @@ from sb3_contrib.common.maskable.callbacks import MaskableEvalCallback
 from sklearn.preprocessing import MinMaxScaler
 from stable_baselines3.common.vec_env import SubprocVecEnv, VecMonitor
 from torch import nn
+
+from user_data.rl.agent import Agent
 
 
 class CleanRlLearner(BaseReinforcementLearningModel):
@@ -45,6 +47,7 @@ class CleanRlLearner(BaseReinforcementLearningModel):
         for step in range(0, max_steps - 1):
             next_obs, reward, terminations, truncations, infos = env.step(0)
             pass
+        return Agent()
 
     # def define_data_pipeline(self, threads=-1) -> Pipeline:
     #     pipe_steps = [
