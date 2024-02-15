@@ -1,20 +1,21 @@
-from typing import Dict, Any, Union, Optional
+from typing import Any, Dict, Optional, Union
 
-import torch
 import gymnasium as gym
 import numpy as np
 import pandas as pd
+import torch
 from datasieve.pipeline import Pipeline
 from datasieve.transforms import SKLearnWrapper
-from sklearn.preprocessing import MinMaxScaler
-from torch import nn
-
-from freqtrade.freqai.RL.Base3ActionRLEnv import Actions, Base3ActionRLEnv, Positions
-from freqtrade.freqai.RL.BaseReinforcementLearningModel import BaseReinforcementLearningModel
 from freqtrade.freqai.data_kitchen import FreqaiDataKitchen
-from stable_baselines3.common.vec_env import SubprocVecEnv, VecMonitor
-from sb3_contrib.common.maskable.callbacks import MaskableEvalCallback
+from freqtrade.freqai.RL.Base3ActionRLEnv import Actions, Base3ActionRLEnv, Positions
+from freqtrade.freqai.RL.BaseReinforcementLearningModel import (
+    BaseReinforcementLearningModel,
+)
 from pandas import DataFrame
+from sb3_contrib.common.maskable.callbacks import MaskableEvalCallback
+from sklearn.preprocessing import MinMaxScaler
+from stable_baselines3.common.vec_env import SubprocVecEnv, VecMonitor
+from torch import nn
 
 
 class CleanRlLearner(BaseReinforcementLearningModel):
@@ -71,7 +72,9 @@ class CleanRlLearner(BaseReinforcementLearningModel):
                 features_and_state["current_profit_pct"] = self.get_unrealized_profit()
                 features_and_state["position"] = self._position.value
                 features_and_state["trade_duration"] = self.get_trade_duration()
-                features_and_state = pd.concat([features_window, features_and_state], axis=1)
+                features_and_state = pd.concat(
+                    [features_window, features_and_state], axis=1
+                )
                 return features_and_state
             else:
                 return features_window
@@ -117,7 +120,9 @@ class CleanRlLearner(BaseReinforcementLearningModel):
                 action == Actions.Sell.value and self._position == Positions.Long
             ):
                 if pnl > self.profit_aim * self.rr:
-                    factor *= self.rl_config["model_reward_parameters"].get("win_reward_factor", 2)
+                    factor *= self.rl_config["model_reward_parameters"].get(
+                        "win_reward_factor", 2
+                    )
                 return float(rew * factor)
 
             return 0.0
