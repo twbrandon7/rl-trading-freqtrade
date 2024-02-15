@@ -40,7 +40,7 @@ class CleanRlLearner(BaseReinforcementLearningModel):
     def fit(self, data_dictionary: Dict[str, Any], dk: FreqaiDataKitchen, **kwargs):
         env = self.train_env
         next_obs, _ = env.reset(seed=42)
-        max_steps = self.config["rl_config"]["max_trade_duration_candles"]
+        max_steps = self.config["freqai"]["rl_config"]["max_trade_duration_candles"]
         for step in range(0, max_steps - 1):
             next_obs, reward, terminations, truncations, infos = env.step(0)
             pass
