@@ -27,7 +27,7 @@ class CleanRlLearner(BaseReinforcementLearningModel):
         self.eval_env: Union[VecMonitor, SubprocVecEnv, gym.Env] = gym.Env()
         self.eval_callback: Optional[MaskableEvalCallback] = None
         self.model_type = self.freqai_info["rl_config"]["model_type"]
-        self.rl_config = self.freqai_info["rl_config"]
+        self.rl_config: Dict[str, Any] = self.freqai_info["rl_config"]
         self.df_raw: DataFrame = DataFrame()
         self.continual_learning = self.freqai_info.get("continual_learning", False)
 
@@ -37,7 +37,7 @@ class CleanRlLearner(BaseReinforcementLearningModel):
     def fit(self, data_dictionary: Dict[str, Any], dk: FreqaiDataKitchen, **kwargs):
         env = self.train_env
         next_obs, _ = env.reset(seed=42)
-        max_steps = self.config["freqai"]["rl_config"]["max_trade_duration_candles"]
+        max_steps = self.rl_config.get("max_trade_duration_candles", 300)
         for step in range(0, max_steps - 1):
             next_obs, reward, terminations, truncations, infos = env.step(0)
             pass
