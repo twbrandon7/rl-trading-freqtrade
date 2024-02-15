@@ -35,15 +35,11 @@
     "key": "your_exchange_key",
     "secret": "your_exchange_secret",
     "ccxt_config": {},
-    "ccxt_async_config": {
-    },
+    "ccxt_async_config": {},
     "pair_whitelist": [
-      "BTC/USDT:USDT",
-      "BTC/USDT"
+      "BTC/USDT:USDT"
     ],
-    "pair_blacklist": [
-      "BNB/.*"
-    ]
+    "pair_blacklist": []
   },
   "pairlists": [
     {
@@ -80,15 +76,9 @@
     "conv_width": 12,
     "feature_parameters": {
       "include_timeframes": [
-        "5m",
-        "15m",
-        "4h"
+        "5m"
       ],
-      "include_corr_pairlist": [
-        "ETH/USD",
-        "LINK/USD",
-        "BNB/USD"
-      ],
+      "include_corr_pairlist": [],
       "label_period_candles": 24,
       "include_shifted_candles": 2,
       "indicator_periods_candles": [
