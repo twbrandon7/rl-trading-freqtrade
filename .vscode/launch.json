@@ -16,6 +16,45 @@
                 "${workspaceFolder}/user_data/config.json"
             ],
             "cwd": "${workspaceFolder}",
-        }
+        },
+        {
+            "name": "Python Debugger: Backtesting Freqtrade CleanRL",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "freqtrade",
+            "args": [
+                "backtesting",
+                "--freqaimodel",
+                "CleanRlLearner",
+                "--strategy",
+                "MyRLStrategy",
+                "--config",
+                "${workspaceFolder}/user_data/config.json",
+                "--timerange",
+                "20231201-20240201",
+                "--timeframe-detail",
+                "1m",
+                "--export-filename",
+                "user_data/backtest_results/backtest_rl.json"
+            ],
+            "cwd": "${workspaceFolder}",
+        },
+        {
+            "name": "Python Debugger: Freqtrade Download Data",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "freqtrade",
+            "args": [
+                "download-data",
+                "--timerange",
+                "20210101-20240201",
+                "--config",
+                "${workspaceFolder}/user_data/config.json",
+                "-t",
+                "1m",
+                "5m",
+            ],
+            "cwd": "${workspaceFolder}",
+        },
     ]
 }
