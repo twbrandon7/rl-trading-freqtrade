@@ -1,0 +1,21 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python Debugger: Freqtrade CleanRL",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "freqtrade",
+            "args": [
+                "trade",
+                "--freqaimodel",
+                "CleanRlLearner",
+                "--strategy",
+                "MyRLStrategy",
+                "--config",
+                "${workspaceFolder}/user_data/config.json"
+            ],
+            "cwd": "${workspaceFolder}",
+        }
+    ]
+}
