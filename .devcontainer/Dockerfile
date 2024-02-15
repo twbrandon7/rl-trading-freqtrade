@@ -85,7 +85,7 @@ RUN cd /tmp && \
 RUN sudo apt-get clean && \
     sudo rm -rf /var/lib/apt/lists/*
 
-RUN pip install freqtrade
+RUN pip install freqtrade[all]
 
 # add $HOME/.local/bin to PATH
 ENV PATH="/home/jupyter/.local/bin:${PATH}"
