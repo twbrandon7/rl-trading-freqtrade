@@ -95,7 +95,7 @@
     },
     "rl_config": {
       "train_cycles": 25,
-      "add_state_info": false,
+      "add_state_info": true,
       "max_trade_duration_candles": 300,
       "max_training_drawdown_pct": 0.8,
       "randomize_starting_position": true,
