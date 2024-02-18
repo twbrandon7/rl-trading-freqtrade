@@ -3,13 +3,19 @@ import torch
 from torch import nn
 from torch.utils.tensorboard import SummaryWriter
 
+from user_data.rl.models.base_model import BaseActorCriticModel
 from user_data.rl.trainer.args import Args
 
 
 class NetworkOptimization:
     def __init__(
-        self, args: Args, optimizer: torch.optim.Optimizer, writer: SummaryWriter
+        self,
+        agent: BaseActorCriticModel,
+        args: Args,
+        optimizer: torch.optim.Optimizer,
+        writer: SummaryWriter,
     ):
+        self.agent = agent
         self.args = args
         self.optimizer = optimizer
         self.writer = writer
@@ -38,7 +44,7 @@ class NetworkOptimization:
                 end = start + self.args.minibatch_size
                 mb_inds = b_inds[start:end]
 
-                _, newlogprob, entropy, newvalue = self.args.get_action_and_value(
+                _, newlogprob, entropy, newvalue = self.agent.get_action_and_value(
                     b_obs[mb_inds], b_actions.long()[mb_inds]
                 )
                 logratio = newlogprob - b_logprobs[mb_inds]

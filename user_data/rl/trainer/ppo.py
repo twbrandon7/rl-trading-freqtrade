@@ -84,7 +84,7 @@ class PpoTrainer:
         agent = self.agent
         agent.to(device)
         optimizer = optim.Adam(agent.parameters(), lr=self.args.learning_rate, eps=1e-5)
-        network_optimization = NetworkOptimization(self.args, optimizer)
+        network_optimization = NetworkOptimization(agent, self.args, optimizer)
 
         trajectory_collector = TrajectoryCollector(
             self.args, device, envs, agent, writer
