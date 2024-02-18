@@ -21,7 +21,8 @@ class Args:
     tensorboard_log_dir: str = "./runs"
     """path to store tensorboard logs"""
     capture_video: bool = False
-    """whether to capture videos of the agent performances (check out `videos` folder)"""
+    """whether to capture videos of the agent performances (check out `videos` folder)
+    """
     video_path: str = "./videos"
     """the path to save videos"""
 
@@ -49,7 +50,8 @@ class Args:
     clip_coef: float = 0.2
     """the surrogate clipping coefficient"""
     clip_vloss: bool = True
-    """Toggles whether or not to use a clipped loss for the value function, as per the paper."""
+    """Toggles whether or not to use a clipped loss for the value function, as per the
+    paper."""
     ent_coef: float = 0.01
     """coefficient of the entropy"""
     vf_coef: float = 0.5
