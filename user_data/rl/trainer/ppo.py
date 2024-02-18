@@ -9,7 +9,7 @@ import torch.optim as optim
 import wandb
 from torch.utils.tensorboard import SummaryWriter
 
-from user_data.rl.agent import BaseActorCriticAgent
+from user_data.rl.models.base_model import BaseActorCriticModel
 from user_data.rl.trainer.args import Args
 from user_data.rl.trainer.network_optimization import NetworkOptimization
 from user_data.rl.trainer.trajectory_collector import TrajectoryCollector
@@ -20,7 +20,7 @@ class PpoTrainer:
     def __init__(
         self,
         env_provider: EnvProvider,
-        agent: BaseActorCriticAgent,
+        agent: BaseActorCriticModel,
         args: Args,
     ) -> None:
         self.env_provider = env_provider
@@ -82,10 +82,8 @@ class PpoTrainer:
         ), "only discrete action space is supported"
 
         agent = self.agent
-        agent.model.to(device)
-        optimizer = optim.Adam(
-            agent.model.parameters(), lr=self.args.learning_rate, eps=1e-5
-        )
+        agent.to(device)
+        optimizer = optim.Adam(agent.parameters(), lr=self.args.learning_rate, eps=1e-5)
         network_optimization = NetworkOptimization(self.args, optimizer)
 
         trajectory_collector = TrajectoryCollector(

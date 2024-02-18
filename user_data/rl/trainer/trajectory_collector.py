@@ -3,7 +3,7 @@ import numpy as np
 import torch
 from torch.utils.tensorboard import SummaryWriter
 
-from user_data.rl.agent import BaseActorCriticAgent
+from user_data.rl.models.base_model import BaseActorCriticModel
 from user_data.rl.trainer.args import Args
 
 
@@ -13,7 +13,7 @@ class TrajectoryCollector:
         args: Args,
         device: torch.device,
         envs: gym.vector.VectorEnv,
-        agent: BaseActorCriticAgent,
+        agent: BaseActorCriticModel,
         writer: SummaryWriter,
     ) -> None:
         self.args = args
@@ -50,7 +50,9 @@ class TrajectoryCollector:
 
             # ALGO LOGIC: action logic
             with torch.no_grad():
-                action, logprob, _, value = self.agent.predict(self.next_obs)
+                action, logprob, _, value = self.agent.get_action_and_value(
+                    self.next_obs
+                )
                 self.values[step] = value.flatten()
             self.actions[step] = action
             self.logprobs[step] = logprob
@@ -70,7 +72,7 @@ class TrajectoryCollector:
 
         # bootstrap value if not done
         with torch.no_grad():
-            next_value = self.agent.predict_critic(self.next_obs).reshape(1, -1)
+            next_value = self.agent.get_value(self.next_obs).reshape(1, -1)
             advantages, returns = self._calculate_advantages(
                 next_value=next_value,
                 rewards=self.rewards,
