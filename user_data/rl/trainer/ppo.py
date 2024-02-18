@@ -1,3 +1,4 @@
+import os
 import random
 import time
 
@@ -42,7 +43,9 @@ class PpoTrainer:
                 monitor_gym=True,
                 save_code=True,
             )
-        writer = SummaryWriter(f"runs/{self.run_name}")
+        writer = SummaryWriter(
+            os.path.join(self.args.tensorboard_log_dir, self.run_name)
+        )
         writer.add_text(
             "hyperparameters",
             "|param|value|\n|-|-|\n%s"
