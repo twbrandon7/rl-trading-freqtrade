@@ -87,5 +87,7 @@ RUN sudo apt-get clean && \
 
 RUN pip install freqtrade[all]
 
+RUN pip install moviepy
+
 # add $HOME/.local/bin to PATH
 ENV PATH="/home/jupyter/.local/bin:${PATH}"
