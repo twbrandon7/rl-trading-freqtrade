@@ -99,7 +99,7 @@ class NetworkOptimization:
                 self.optimizer.zero_grad()
                 loss.backward()
                 nn.utils.clip_grad_norm_(
-                    self.args.parameters(), self.args.max_grad_norm
+                    self.agent.parameters(), self.args.max_grad_norm
                 )
                 self.optimizer.step()
 
