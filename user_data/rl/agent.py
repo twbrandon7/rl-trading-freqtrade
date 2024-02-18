@@ -40,6 +40,14 @@ class BaseAgent(ABC):
         pass
 
 
+class BaseActorCriticAgent(BaseAgent):
+    @abstractmethod
+    def predict_critic(
+        self, observations: pd.DataFrame, deterministic=True
+    ) -> Tuple[np.ndarray, Optional[Tuple[np.ndarray, ...]]]:
+        pass
+
+
 class Agent(BaseAgent):
     def predict(
         self, observations: pd.DataFrame, deterministic=True
