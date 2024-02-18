@@ -20,6 +20,8 @@ class Args:
     """the entity (team) of wandb's project"""
     capture_video: bool = False
     """whether to capture videos of the agent performances (check out `videos` folder)"""
+    video_path: str = "./videos"
+    """the path to save videos"""
 
     # Algorithm specific arguments
     total_timesteps: int = 500000
