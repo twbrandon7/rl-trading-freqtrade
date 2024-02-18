@@ -6,9 +6,9 @@ import gymnasium as gym
 import numpy as np
 import torch
 import torch.optim as optim
-import wandb
 from torch.utils.tensorboard import SummaryWriter
 
+import wandb
 from user_data.rl.models.base_model import BaseActorCriticModel
 from user_data.rl.trainer.args import Args
 from user_data.rl.trainer.network_optimization import NetworkOptimization
@@ -84,7 +84,7 @@ class PpoTrainer:
         agent = self.agent
         agent.to(device)
         optimizer = optim.Adam(agent.parameters(), lr=self.args.learning_rate, eps=1e-5)
-        network_optimization = NetworkOptimization(agent, self.args, optimizer)
+        network_optimization = NetworkOptimization(agent, self.args, optimizer, writer)
 
         trajectory_collector = TrajectoryCollector(
             self.args, device, envs, agent, writer
