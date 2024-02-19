@@ -8,7 +8,7 @@ import pandas as pd
 import torch
 from torch import nn
 
-from user_data.rl.agent import BaseAgent
+from user_data.rl.agents.base_agent import BaseAgent
 
 
 class DummyModel(nn.Module):
