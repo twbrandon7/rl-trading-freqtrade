@@ -1,21 +1,20 @@
 import unittest
-from typing import Tuple
+from typing import Optional, Tuple
 from unittest.mock import MagicMock, patch
 
 import gymnasium as gym
 import numpy as np
 import torch
-from pandas import DataFrame
 from torch.nn.modules import Module
 
-from user_data.rl.agent import BaseActorCriticAgent
+from user_data.rl.models.base_model import BaseActorCriticModel
 from user_data.rl.trainer.args import Args
 from user_data.rl.trainer.trajectory_collector import TrajectoryCollector
 
 
-class DummyActorCriticAgent(BaseActorCriticAgent):
+class DummyActorCriticModel(BaseActorCriticModel):
     def __init__(self, model: Module, args: Args) -> None:
-        super().__init__(model)
+        super().__init__()
         self.args = args
         self._steps = 0
         self.dummy_acton = torch.arange(self.args.num_envs)
@@ -23,8 +22,8 @@ class DummyActorCriticAgent(BaseActorCriticAgent):
         self.dummy_entropy = torch.arange(self.args.num_envs) + 2
         self.dummy_critic = torch.arange(self.args.num_envs) + 3
 
-    def predict(
-        self, observations: DataFrame, deterministic=True
+    def get_action_and_value(
+        self, x: torch.Tensor, action: Optional[torch.Tensor] = None
     ) -> Tuple[np.ndarray, Tuple[np.ndarray, ...] | None]:
         result = (
             self.dummy_acton + self._steps,
@@ -35,7 +34,7 @@ class DummyActorCriticAgent(BaseActorCriticAgent):
         self._steps += 1
         return result
 
-    def predict_critic(self, observations: DataFrame) -> np.ndarray:
+    def get_value(self, x: torch.Tensor) -> np.ndarray:
         return self.dummy_critic + self._steps
 
 
@@ -57,7 +56,7 @@ class TrajectoryCollectorTest(unittest.TestCase):
                 None,
             )
         )
-        self.agent = DummyActorCriticAgent(torch.nn.Linear(4, 2), self.args)
+        self.agent = DummyActorCriticModel(torch.nn.Linear(4, 2), self.args)
         self.writer = patch("torch.utils.tensorboard.SummaryWriter").start()
 
     def tearDown(self):
