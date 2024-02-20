@@ -1,6 +1,7 @@
 from typing import Any, Dict, Optional, Union
 
 import gymnasium as gym
+import numpy as np
 import torch
 from freqtrade.freqai.data_kitchen import FreqaiDataKitchen
 from freqtrade.freqai.RL.BaseReinforcementLearningModel import (
@@ -10,8 +11,10 @@ from pandas import DataFrame
 from sb3_contrib.common.maskable.callbacks import MaskableEvalCallback
 from stable_baselines3.common.vec_env import SubprocVecEnv, VecMonitor
 
-from user_data.rl.agent import Agent
+from user_data.rl.agents.simple_nn import ActorCriticAgent, SimpleNnActorCriticModel
 from user_data.rl.env.my_rl_env import MyRLEnv as UserMyRLEnv
+from user_data.rl.trainer.args import Args
+from user_data.rl.trainer.ppo import PpoTrainer
 
 
 class CleanRlLearner(BaseReinforcementLearningModel):
@@ -35,13 +38,27 @@ class CleanRlLearner(BaseReinforcementLearningModel):
         self.dd.model_type = "pytorch"
 
     def fit(self, data_dictionary: Dict[str, Any], dk: FreqaiDataKitchen, **kwargs):
-        env = self.train_env
-        next_obs, _ = env.reset(seed=42)
         max_steps = self.rl_config.get("max_trade_duration_candles", 300)
-        for step in range(0, max_steps - 1):
-            next_obs, reward, terminations, truncations, infos = env.step(0)
-            pass
-        return Agent()
+        args = Args()
+        args.track = self.rl_config.get("enable_wandb", False)
+        args.num_steps = max_steps
+        args.num_envs = 1
+        args.wandb_project_name = self.config.get("bot_name", "Freqtrade")
+
+        model = SimpleNnActorCriticModel(
+            input_dim=np.array(self.train_env.observation_space.shape).prod(),
+            output_dim=self.train_env.action_space.n,
+            hidden_dim=self.rl_config.get("hidden_dim", 128),
+        )
+        agent = ActorCriticAgent(model)
+
+        trainer = PpoTrainer(
+            lambda render_mode: self.train_env,
+            agent.model,
+            args=args,
+        )
+        trainer.train()
+        return agent
 
     # def define_data_pipeline(self, threads=-1) -> Pipeline:
     #     pipe_steps = [
