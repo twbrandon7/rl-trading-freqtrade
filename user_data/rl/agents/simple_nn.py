@@ -30,11 +30,13 @@ class SimpleNnActorCriticModel(BaseActorCriticModel):
         )
 
     def get_value(self, x: torch.Tensor) -> torch.Tensor:
+        x = torch.flatten(x, start_dim=1)
         return self.critic(x)
 
     def get_action_and_value(
         self, x: torch.Tensor, action: Optional[torch.Tensor] = None
     ) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
+        x = torch.flatten(x, start_dim=1)
         logits = self.actor(x)
         probs = Categorical(logits=logits)
         if action is None:
