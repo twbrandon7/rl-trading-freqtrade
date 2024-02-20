@@ -40,6 +40,15 @@ class MyRLEnv(Base3ActionRLEnv):
     ) -> tuple[ObsType, dict[str, Any]]:
         return super().reset(seed)
 
+    def _update_history(self, info):
+        if not self.history:
+            self.history = {key: [] for key in info.keys()}
+
+        for key, value in info.items():
+            if key not in self.history:
+                self.history[key] = []
+            self.history[key].append(value)
+
     def calculate_reward(self, action: int) -> float:
 
         # first, penalize if the action is not valid
