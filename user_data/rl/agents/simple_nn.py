@@ -51,7 +51,12 @@ class ActorCriticAgent(BaseAgent):
     def predict(
         self, observations: pd.DataFrame, deterministic=True
     ) -> Tuple[np.ndarray, Optional[Tuple[np.ndarray, ...]]]:
-        x = torch.from_numpy(observations.values).float()
+        x = torch.from_numpy(observations.values).float().to(self._device)
+        x = x.unsqueeze(0)
         model: SimpleNnActorCriticModel = self.model
-        action, (log_prob, entropy, value) = model.get_action_and_value(x)
-        return action.numpy(), (log_prob.numpy(), entropy.numpy(), value.numpy())
+        action, log_prob, entropy, value = model.get_action_and_value(x)
+        return action.cpu().detach().numpy(), (
+            log_prob.cpu().detach().numpy(),
+            entropy.cpu().detach().numpy(),
+            value.cpu().detach().numpy(),
+        )
