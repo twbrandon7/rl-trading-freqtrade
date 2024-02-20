@@ -6,8 +6,6 @@ import pandas as pd
 import torch
 from torch import nn
 
-from user_data.rl.models.base_model import BaseActorCriticModel
-
 
 class BaseAgent(ABC):
     def __init__(self, model: nn.Module) -> None:
@@ -40,16 +38,3 @@ class BaseAgent(ABC):
         self, observations: pd.DataFrame, deterministic=True
     ) -> Tuple[np.ndarray, Optional[Tuple[np.ndarray, ...]]]:
         pass
-
-
-class ActorCriticAgent(BaseAgent):
-    def __init__(self, model: BaseActorCriticModel) -> None:
-        super().__init__(model)
-
-    def predict(
-        self, observations: pd.DataFrame, deterministic=True
-    ) -> Tuple[np.ndarray, Optional[Tuple[np.ndarray, ...]]]:
-        x = torch.from_numpy(observations.values).float()
-        model: BaseActorCriticModel = self.model
-        action, (log_prob, entropy, value) = model.get_action_and_value(x)
-        return action.numpy(), (log_prob.numpy(), entropy.numpy(), value.numpy())
