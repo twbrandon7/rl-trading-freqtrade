@@ -11,6 +11,7 @@ class BaseAgent(ABC):
     def __init__(self, model: nn.Module) -> None:
         super().__init__()
         self._model_path = None
+        self._device = None
         self.model = model
 
     def save(self, path: str):
@@ -31,6 +32,7 @@ class BaseAgent(ABC):
     def load_from_checkpoint(pickle_dict: dict):
         agent: "BaseAgent" = pickle_dict["agent"]
         agent.model = torch.load(agent._model_path)
+        agent._device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         return agent
 
     @abstractmethod
