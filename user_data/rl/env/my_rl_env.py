@@ -1,7 +1,9 @@
-import pandas as pd
-import numpy as np
+from typing import Any
 
+import numpy as np
+import pandas as pd
 from freqtrade.freqai.RL.Base3ActionRLEnv import Actions, Base3ActionRLEnv, Positions
+from gymnasium.core import ObsType
 
 
 class MyRLEnv(Base3ActionRLEnv):
@@ -29,6 +31,14 @@ class MyRLEnv(Base3ActionRLEnv):
             return features_and_state
         else:
             return features_window
+
+    def reset(
+        self,
+        *,
+        seed: int | None = None,
+        options: dict[str, Any] | None = None,
+    ) -> tuple[ObsType, dict[str, Any]]:
+        return super().reset(seed)
 
     def calculate_reward(self, action: int) -> float:
 
