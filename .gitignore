@@ -13,3 +13,4 @@ data/
 *.sqlite-wal
 
 user_data/backtest_results/
+user_data/models/rl-model/
