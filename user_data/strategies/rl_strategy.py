@@ -33,6 +33,19 @@ class MyRLStrategy(IStrategy):
         },
     }
 
+    def leverage(
+        self,
+        pair: str,
+        current_time: qtpylib.datetime,
+        current_rate: float,
+        proposed_leverage: float,
+        max_leverage: float,
+        entry_tag: str | None,
+        side: str,
+        **kwargs,
+    ) -> float:
+        return 10
+
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         # the model will return all labels created by user in `set_freqai_targets()`
         # (& appended targets), an indication of whether or not the prediction should be accepted,
