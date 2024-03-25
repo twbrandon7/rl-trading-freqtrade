@@ -59,5 +59,6 @@
         "--gpus",
         "all",
         "--ipc=host"
-    ]
+    ],
+    "postCreateCommand": "pip install git+ssh://git@github.com/twbrandon7/binance-data-utils.git"
 }

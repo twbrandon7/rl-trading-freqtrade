@@ -91,5 +91,7 @@ RUN pip install moviepy
 
 RUN pip install gymnasium[box2d]
 
+RUN pip install git+https://github.com/AminHP/gym-anytrading.git@v2.0.0
+
 # add $HOME/.local/bin to PATH
 ENV PATH="/home/jupyter/.local/bin:${PATH}"
