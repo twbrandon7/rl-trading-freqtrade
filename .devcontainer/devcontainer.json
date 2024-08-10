@@ -58,7 +58,9 @@
     "runArgs": [
         "--gpus",
         "all",
-        "--ipc=host"
+        "--ipc=host",
+        "--volume",
+        "rl-trading-freqtrade-home:/home/jupyter"
     ],
     "postCreateCommand": "pip install git+ssh://git@github.com/twbrandon7/binance-data-utils.git"
 }
